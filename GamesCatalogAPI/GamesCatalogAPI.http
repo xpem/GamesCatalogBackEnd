@@ -1,6 +1,12 @@
 @GamesCatalogAPI_HostAddress = http://localhost:5048
 
-GET {{GamesCatalogAPI_HostAddress}}/weatherforecast/
-Accept: application/json
-
+POST {{GamesCatalogAPI_HostAddress}}/User/
+Content-Type: application/json
+# Authorization: Bearer {{token}}
+{  
+  "name": "test",
+  "email": "user@example.com"  
+}
 ###
+
+
