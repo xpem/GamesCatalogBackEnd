@@ -3,9 +3,10 @@
 POST {{GamesCatalogAPI_HostAddress}}/User/
 Content-Type: application/json
 # Authorization: Bearer {{token}}
-{  
+{
   "name": "test",
-  "email": "user@example.com"  
+  "email": "user@example.com",
+  "password": "pass123"
 }
 ###
 

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Repos;
+using Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,12 +14,24 @@ builder.Services.AddOpenApi();
 
 string gamesCatalogConn = builder.Configuration.GetConnectionString("GamesCatalogConn");
 
-builder.Services.AddMySql<DbCtx>(gamesCatalogConn, ServerVersion.AutoDetect(gamesCatalogConn));
+builder.Services.AddDbContextFactory<DbCtx>(options 
+    => options.UseMySql(gamesCatalogConn, ServerVersion.AutoDetect(gamesCatalogConn)));
+
+#endregion
+
+#region Servs
+
+builder.Services.AddScoped<IUserService, UserService>();
+
+#endregion
+
+#region Repos
+
+builder.Services.AddScoped<IUserRepo, UserRepo>();
 
 #endregion
 
 var app = builder.Build();
-
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

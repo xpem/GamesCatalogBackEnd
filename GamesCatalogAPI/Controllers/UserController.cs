@@ -1,28 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.Reqs.User;
+using Services;
 
 namespace GamesCatalogAPI.Controllers
 {
     [Route("[Controller]")]
     [ApiController]
-    public class UserController : Controller
+    public class UserController(IUserService userService) : BaseController
     {
         [Route("")]
         [HttpPost]
-        public IActionResult Index(User user)
-        {
-            // Use the 'user' parameter to avoid the IDE0060 warning
-            if (user == null)
-            {
-                return BadRequest("User cannot be null.");
-            }
-
-            return Ok($"Received user: {user.Name}, {user.Email}");
-        }
-    }
-
-    public record User(string Name, string Email)
-    {
-        public required string Name { get; set; } = Name;
-        public required string Email { get; set; } = Email;
+        public async Task<IActionResult> SignUp(ReqUser reqUser) => BuildResponse(await userService.CreateAsync(reqUser));
     }
 }
