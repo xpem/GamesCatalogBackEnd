@@ -19,4 +19,17 @@ public class UserRepo(IDbContextFactory<DbCtx> DbCtx) : IUserRepo
         using var context = DbCtx.CreateDbContext();
         return await context.User.FirstOrDefaultAsync(x => x.Email.Equals(email));
     }
+
+    public async Task<UserDTO?> GetByEmailAndPasswordAsync(string email, string encryptedPassword)
+    {
+        using var context = DbCtx.CreateDbContext();
+        return await context.User.FirstOrDefaultAsync(x 
+            => x.Email == email && x.Password == encryptedPassword);
+    }
+
+    public async Task<UserDTO?> GetByIdAsync(int uid)
+    {
+        using var context = DbCtx.CreateDbContext();
+        return  await context.User.FirstOrDefaultAsync(x => x.Id.Equals(uid));
+    }
 }
