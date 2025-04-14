@@ -2,10 +2,11 @@
 using Models.Reqs.User;
 using Models.Resps;
 using Repos;
+using Services.Functions;
 
 namespace Services
 {
-    public class UserService(IUserRepo userRepo) : IUserService
+    public class UserService(IUserRepo userRepo, IEncryptionService encryptionService) : IUserService
     {
         public async Task<BaseResp> CreateAsync(ReqUser reqUser)
         {
@@ -22,6 +23,10 @@ namespace Services
 
             string? existingUserMessage = await ValidateExistingUserAsync(user);
             if (existingUserMessage != null) { return new BaseResp(null, existingUserMessage); }
+
+            if (user.Password != null)
+                user.Password = encryptionService.Encrypt(user.Password);
+            else throw new NullReferenceException(nameof(user.Password));
 
             await userRepo.CreateAsync(user);
 

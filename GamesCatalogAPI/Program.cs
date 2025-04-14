@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Repos;
 using Services;
+using Services.Functions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +23,9 @@ builder.Services.AddDbContextFactory<DbCtx>(options
 #region Servs
 
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IEncryptionService, EncryptionService>(p
+    => new EncryptionService(builder.Configuration["Encryption:Key32"], builder.Configuration["Encryption:IV16"]));
 
 #endregion
 

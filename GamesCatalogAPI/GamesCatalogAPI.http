@@ -5,7 +5,7 @@ Content-Type: application/json
 # Authorization: Bearer {{token}}
 {
   "name": "test",
-  "email": "user@example.com",
+  "email": "user2@example.com",
   "password": "pass123"
 }
 ###
