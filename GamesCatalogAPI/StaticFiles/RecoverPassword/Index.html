@@ -1,0 +1,62 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Games Catalog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <style>
+        .containerCenter {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+    <script>
+        function ShowPassword(InputId) {
+            var x = document.getElementById(InputId);
+            if (x.type === "password") {
+                x.type = "text";
+            } else {
+                x.type = "password";
+            }
+        }
+    </script>
+</head>
+<body style="background: #1B2D3E">
+    <div class="container containerCenter">
+        <div class="row">
+            <div class="col align-self-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Games Catalog</h5>
+                        <h6 class="card-subtitle mb-2 text-body-secondary">Password Recovery</h6>
+                        <form method="POST" action="/User/RecoverPassword/{{token}}">
+                            <p class="card-text">
+                                <div class="mb-12">
+                                    <label for="Password" class="form-label">Password</label>
+                                    <input type="password" name="Password" id="Password" class="form-control" maxlength="20" aria-describedby="passwordHelpBlock" required>
+                                    <div id="passwordHelpBlock" class="form-text">
+                                        Your password must be 4-20 characters long.
+                                    </div>
+                                    <input type="checkbox" onclick="ShowPassword('Password')"> Show Password
+                                </div>
+                                <br />
+                                <div class="mb-12">
+                                    <label for="PasswordConfirmation" class="form-label">Password Confirmation</label>
+                                    <input type="password" name="PasswordConfirmation" id="PasswordConfirmation" class="form-control">
+                                    <input type="checkbox" onclick="ShowPassword('PasswordConfirmation')"> Show Password
+                                </div>
+                            </p>
+                            <input type="submit" class="btn btn-success" value="Update Password" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+</body>
+</html>

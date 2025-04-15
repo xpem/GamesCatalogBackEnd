@@ -32,7 +32,21 @@ builder.Services.AddScoped<IEncryptionService, EncryptionService>(p
     => new EncryptionService(builder.Configuration["Encryption:Key32"], builder.Configuration["Encryption:IV16"]));
 
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>(p
-    => new JwtTokenService(builder.Configuration["JwtKey"]));
+=> new JwtTokenService(builder.Configuration["JwtKey"]));
+
+string emailUrl;
+
+if (builder.Environment.IsDevelopment())
+    emailUrl = builder.Configuration["SendEmailKeys:UrlLocal"];
+else emailUrl = builder.Configuration["SendEmailKeys:UrlLocal"];
+
+builder.Services.AddScoped<ISendRecoverPasswordEmailService, SendRecoverPasswordEmailService>(p
+    => new SendRecoverPasswordEmailService(
+    builder.Configuration["SendEmailKeys:SenderEmail"],
+    emailUrl,
+    builder.Configuration["SendEmailKeys:SenderPassword"],
+    builder.Configuration["SendEmailKeys:Host"]
+    ));
 
 #endregion
 

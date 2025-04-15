@@ -4,7 +4,7 @@ POST {{GamesCatalogAPI_HostAddress}}/User/
 Content-Type: application/json
 {
   "name": "test",
-  "email": "user2@example.com",
+  "email": "user@example.com",
   "password": "pass123"
 }
 ###
@@ -12,8 +12,15 @@ Content-Type: application/json
 POST {{GamesCatalogAPI_HostAddress}}/User/Session
 Content-Type: application/json
 {
-  "email": "user2@example.com",
+  "email": "user@example.com",
   "password": "pass123"
+}
+###
+
+POST {{GamesCatalogAPI_HostAddress}}/User/RecoverPassword
+Content-Type: application/json
+{
+  "email": "user@example.com"
 }
 ###
 

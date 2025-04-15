@@ -6,7 +6,8 @@ using Services.Functions;
 
 namespace Services
 {
-    public class UserService(IUserRepo userRepo, IEncryptionService encryptionService, IJwtTokenService jwtTokenService) : IUserService
+    public class UserService(IUserRepo userRepo, IEncryptionService encryptionService, IJwtTokenService jwtTokenService,
+        ISendRecoverPasswordEmailService sendRecoverPasswordEmailService) : IUserService
     {
         public async Task<BaseResp> CreateAsync(ReqUser reqUser)
         {
@@ -76,6 +77,50 @@ namespace Services
                 return new BaseResp(null, "User not found");
 
             return new BaseResp(new ResUser() { Id = userResp.Id, Name = userResp.Name, Email = userResp.Email, CreatedAt = userResp.CreatedAt });
+        }
+
+        public async Task<BaseResp> SendRecoverPasswordEmailAsync(ReqUserEmail reqUserEmail)
+        {
+            string? validateError = reqUserEmail.Validate();
+
+            if (!string.IsNullOrEmpty(validateError)) return new BaseResp(null, validateError);
+
+            UserDTO? userResp = await userRepo.GetByEmailAsync(reqUserEmail.Email);
+
+            if (userResp != null)
+            {
+                string token = jwtTokenService.GenerateToken(userResp.Id, userResp.Email, DateTime.UtcNow.AddHours(1));
+                try
+                {
+                    _ = sendRecoverPasswordEmailService.SendEmail(userResp.Email, token);
+                }
+                catch
+                {
+                    return new BaseResp(null, "A error occurred!");
+                }
+            }
+
+            return new BaseResp("Email Sent.");
+        }
+
+        public async Task<BaseResp> UpdatePasswordAsync(ReqRecoverPassword reqRecoverPassword, int uid)
+        {
+            string? validateError = reqRecoverPassword.Validate();
+
+            if (string.IsNullOrEmpty(validateError) && reqRecoverPassword.Password != reqRecoverPassword.PasswordConfirmation)
+                validateError = "Invalid password Confirmation";
+
+            if (!string.IsNullOrEmpty(validateError)) return new BaseResp(null, validateError);
+
+            UserDTO? user = await userRepo.GetByIdAsync(uid);
+
+            if (user != null)
+            {
+                await userRepo.UpdatePasswordAsync(user.Id, encryptionService.Encrypt(reqRecoverPassword.Password));
+
+                return new BaseResp("Password Updated.");
+            }
+            else return new BaseResp(null, "Invalid User");
         }
     }
 }

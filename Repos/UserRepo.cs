@@ -23,13 +23,23 @@ public class UserRepo(IDbContextFactory<DbCtx> DbCtx) : IUserRepo
     public async Task<UserDTO?> GetByEmailAndPasswordAsync(string email, string encryptedPassword)
     {
         using var context = DbCtx.CreateDbContext();
-        return await context.User.FirstOrDefaultAsync(x 
+        return await context.User.FirstOrDefaultAsync(x
             => x.Email == email && x.Password == encryptedPassword);
     }
 
     public async Task<UserDTO?> GetByIdAsync(int uid)
     {
         using var context = DbCtx.CreateDbContext();
-        return  await context.User.FirstOrDefaultAsync(x => x.Id.Equals(uid));
+        return await context.User.FirstOrDefaultAsync(x => x.Id.Equals(uid));
+    }
+
+    public async Task UpdatePasswordAsync(int uid, string password)
+    {
+        using var context = DbCtx.CreateDbContext();
+
+        context.User.Where(x => x.Id == uid).ExecuteUpdate(
+            y => y.SetProperty(z => z.Password, password));
+
+        await context.SaveChangesAsync();
     }
 }
