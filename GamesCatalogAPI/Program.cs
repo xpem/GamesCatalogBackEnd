@@ -1,3 +1,4 @@
+using ApiRepos;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -5,6 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 using Repos;
 using Services;
 using Services.Functions;
+using Services.IGDB;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -48,11 +50,31 @@ builder.Services.AddScoped<ISendRecoverPasswordEmailService, SendRecoverPassword
     builder.Configuration["SendEmailKeys:Host"]
     ));
 
+builder.Services.AddScoped<IIGDBGamesApiService>(provider =>
+{
+    var clientID = builder.Configuration["ClientID"];
+    var accessTokenService = provider.GetRequiredService<IIGDBAccessTokenService>();
+    return new IGDBGamesApiService(clientID, accessTokenService);
+});
+
+builder.Services.AddScoped<IIGDBAccessTokenService, IGDBAccessTokenService>();
+
 #endregion
 
 #region Repos
 
 builder.Services.AddScoped<IUserRepo, UserRepo>();
+builder.Services.AddScoped<IIGDBAccessTokenRepo, IGDBAccessTokenRepo>();
+
+#endregion
+
+#region API Repos
+
+builder.Services.AddScoped<IIGDBAccessTokenAPIRepo, IGDBAccessTokenAPIRepo>(p
+    => new IGDBAccessTokenAPIRepo(
+    builder.Configuration["ClientID"],
+    builder.Configuration["ClientSecret"]
+    ));
 
 #endregion
 

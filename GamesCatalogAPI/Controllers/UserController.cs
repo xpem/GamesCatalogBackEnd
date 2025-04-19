@@ -6,6 +6,7 @@ using Models.Reqs.User;
 using Models.Resps;
 using Services;
 using Services.Functions;
+using Services.IGDB;
 
 namespace GamesCatalogAPI.Controllers
 {
@@ -24,7 +25,7 @@ namespace GamesCatalogAPI.Controllers
         [Route("")]
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetUser() => BuildResponse(await userService.GetByIdAsync(Uid));
+        public async Task<IActionResult> GetUser() { return BuildResponse(await userService.GetByIdAsync(Uid)); }
 
         [Route("RecoverPassword")]
         [HttpPost]

@@ -4,7 +4,7 @@ POST {{GamesCatalogAPI_HostAddress}}/User/
 Content-Type: application/json
 {
   "name": "test",
-  "email": "user@example.com",
+  "email": "emanuel.xpe@gmail.com",
   "password": "pass123"
 }
 ###
@@ -12,7 +12,7 @@ Content-Type: application/json
 POST {{GamesCatalogAPI_HostAddress}}/User/Session
 Content-Type: application/json
 {
-  "email": "user@example.com",
+  "email": "emanuel.xpe@gmail.com",
   "password": "pass123"
 }
 ###
@@ -25,8 +25,17 @@ Content-Type: application/json
 ###
 
 #Auths
-@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiIyIiwiZW1haWwiOiJ1c2VyMkBleGFtcGxlLmNvbSIsIm5iZiI6MTc0NDY1ODgwOCwiZXhwIjoxNzQ0NjU4ODEzLCJpYXQiOjE3NDQ2NTg4MDh9.q-s-lVkQUAMb5-8PuzGyzTjq1xwRJcYvzjfet9j3rbs
+@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1IiwiZW1haWwiOiJlbWFudWVsLnhwZUBnbWFpbC5jb20iLCJuYmYiOjE3NDQ4Mzg2NjQsImV4cCI6MTc0NTI3MDY2NCwiaWF0IjoxNzQ0ODM4NjY0fQ.x_Q_a1PcGxgeduZFJZllNc7eGOZd1cKBfU7aHH9UQSg
 
 GET {{GamesCatalogAPI_HostAddress}}/User
 Authorization: Bearer {{Token}}
+###
+
+POST {{GamesCatalogAPI_HostAddress}}/Game/IGDB
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+{
+  "Search": "god of war",
+  "StartIndex": "0"
+}
 ###
