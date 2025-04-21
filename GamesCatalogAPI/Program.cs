@@ -59,12 +59,16 @@ builder.Services.AddScoped<IIGDBGamesApiService>(provider =>
 
 builder.Services.AddScoped<IIGDBAccessTokenService, IGDBAccessTokenService>();
 
+builder.Services.AddScoped<IGameStatusService, GameStatusService>();
+
 #endregion
 
 #region Repos
 
 builder.Services.AddScoped<IUserRepo, UserRepo>();
 builder.Services.AddScoped<IIGDBAccessTokenRepo, IGDBAccessTokenRepo>();
+builder.Services.AddScoped<IGameRepo, GameRepo>();
+builder.Services.AddScoped<IGameStatusRepo, GameStatusRepo>();
 
 #endregion
 

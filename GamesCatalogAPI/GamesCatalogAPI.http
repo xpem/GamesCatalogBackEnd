@@ -1,32 +1,30 @@
-@GamesCatalogAPI_HostAddress = http://localhost:5048
+# @GamesCatalogAPI_HostAddress = http://localhost:5048
 
 POST {{GamesCatalogAPI_HostAddress}}/User/
 Content-Type: application/json
 {
   "name": "test",
-  "email": "emanuel.xpe@gmail.com",
-  "password": "pass123"
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
 }
 ###
 
 POST {{GamesCatalogAPI_HostAddress}}/User/Session
 Content-Type: application/json
 {
-  "email": "emanuel.xpe@gmail.com",
-  "password": "pass123"
+  "email": "{{userEmail}}",
+  "password": "{{userPassword}}"
 }
 ###
 
 POST {{GamesCatalogAPI_HostAddress}}/User/RecoverPassword
 Content-Type: application/json
 {
-  "email": "user@example.com"
+  "email": "{{userEmail}}"
 }
 ###
 
 #Auths
-@Token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1IiwiZW1haWwiOiJlbWFudWVsLnhwZUBnbWFpbC5jb20iLCJuYmYiOjE3NDQ4Mzg2NjQsImV4cCI6MTc0NTI3MDY2NCwiaWF0IjoxNzQ0ODM4NjY0fQ.x_Q_a1PcGxgeduZFJZllNc7eGOZd1cKBfU7aHH9UQSg
-
 GET {{GamesCatalogAPI_HostAddress}}/User
 Authorization: Bearer {{Token}}
 ###
@@ -38,4 +36,51 @@ Content-Type: application/json
   "Search": "god of war",
   "StartIndex": "0"
 }
+###
+
+POST {{GamesCatalogAPI_HostAddress}}/Game/Status
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+{
+  "IGDBId":"252476",
+  "Name":"Prince of Persia: The Lost Crown",
+  "ReleaseDate" :"01/2024",
+  "Platforms" :"Series X|S, PS4, PC, PS5, Mac, XONE, Switch",
+  "Summary":"Prince of Persia: The Lost Crown is a 2.5D action-adventure platformer. It follows Sargon, a warrior searching for a kidnapped prince in the cursed city of Mount Qaf. The game features acrobatic platforming, time-based powers, and a Metroidvania-style world.",
+  "CoverUrl":"https://images.igdb.com/igdb/image/upload/t_cover_big/co6lli.jpg",
+  "Status" :2,
+  "Rate": 9
+}
+###
+
+POST {{GamesCatalogAPI_HostAddress}}/Game/Status
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+{
+  "IGDBId":"112875",
+  "Name":"God of War Ragnarök",
+  "ReleaseDate" :"01/2024",
+  "Platforms" :"PS4, PC, PS5",
+  "Summary":"God of War: Ragnarök is the ninth installment in the God of War series and the sequel to 2018's God of War. Continuing with the Norse mythology theme, the game is set in ancient Norway and features series protagonists Kratos, the former Greek God of War, and his young son Atreus. The game kicked off the events of Ragnarök, where Kratos and Atreus must journey to each of the Nine Realms in search of answers as they prepare for the prophesied battle that will end the world.",
+  "CoverUrl":"https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.jpg",
+  "Status" :2,
+  "Rate": 10
+}
+###
+
+GET {{GamesCatalogAPI_HostAddress}}/Game/status/byupdatedat/2023-01-01T21:53:28.331Z/1
+Authorization: Bearer {{Token}}
+###
+
+Put {{GamesCatalogAPI_HostAddress}}/Game/Status
+Authorization: Bearer {{Token}}
+Content-Type: application/json
+{
+  "Id":2,
+  "Status" :1
+}
+###
+
+DELETE {{GamesCatalogAPI_HostAddress}}/Game/Status/3
+Authorization: Bearer {{Token}}
 ###
